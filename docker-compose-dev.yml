@@ -1,0 +1,10 @@
+version: '3'
+services:
+  server:
+    image: monitor/server
+    working_dir: /workspace
+    volumes:
+      - ./server:/workspace
+      - vscode-gradle:/home/dev/.gradle
+volumes:
+  vscode-gradle:

@@ -1,0 +1,12 @@
+version: '3'
+services:
+  server:
+    image: openjdk:17-slim-buster
+    user: 1000:1000
+    command:
+      - java
+      - -jar
+      - app.jar
+    working_dir: /workspace
+    volumes:
+      - ./server:/workspace

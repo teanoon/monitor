@@ -1,0 +1,25 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/java
+{
+    "name": "monitor server",
+    "dockerComposeFile": [
+        "../../docker-compose-dev.yml"
+    ],
+    "service": "server",
+    "runServices": ["server"],
+    "overrideCommand": true,
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "settings": {
+              "terminal.integrated.defaultProfile.linux": "bash"
+            },
+            "extensions": [
+                "k--kato.intellij-idea-keybindings",
+                "streetsidesoftware.code-spell-checker",
+                "vscjava.vscode-java-pack",
+                "GitHub.copilot"
+            ]
+        }
+    }
+}
