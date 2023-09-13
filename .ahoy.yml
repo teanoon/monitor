@@ -3,3 +3,9 @@ ahoyapi: v2
 commands:
   compose:
     cmd: docker compose -f docker-compose.yml -f docker-compose-dev.yml $@
+  build-server:
+    cmd: |
+      docker compose -f docker-compose.yml -f docker-compose-dev.yml run --rm server bash -c "./gradlew clean build"
+      cp server/build/libs/app-0.0.1-SNAPSHOT.jar server/app.jar
+  start-server:
+    cmd: docker compose up -d server
