@@ -8,5 +8,38 @@ services:
       - -jar
       - app.jar
     working_dir: /workspace
+    environment:
+      JAVA_TOOL_OPTIONS: -javaagent:opentelemetry-javaagent.jar
+      OTEL_SERVICE_NAME: user-service
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://collector:4317
+    ports:
+      - 8080:8080
     volumes:
       - ./server:/workspace
+    depends_on:
+      - collector
+  # collector and metrics and spans
+  collector:
+    image: otel/opentelemetry-collector-contrib:0.85.0
+    command: ["--config=/etc/otelcol-config.yml"]
+    volumes:
+      - ./collector/otelcol-config.yml:/etc/otelcol-config.yml
+    depends_on:
+      - jaeger
+      - prometheus
+      - grafana
+  jaeger:
+    image: jaegertracing/all-in-one
+    environment:
+      COLLECTOR_OTLP_ENABLED: 'true'
+  prometheus:
+    image: quay.io/prometheus/prometheus:v2.43.0
+    volumes:
+      - ./collector/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-db:/prometheus/
+  grafana:
+    image: grafana/grafana:9.4.7
+    volumes:
+      - ./collector/grafana.ini:/etc/grafana/grafana.ini
+volumes:
+  prometheus-db:
